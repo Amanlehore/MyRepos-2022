@@ -28,8 +28,7 @@
 		 
 		 -- SET OutputRoot.XMLNSC.Demo2.*[]= InputRoot.XMLNSC.Demo2.*[];  for arry of elemnts under Demo2
 
-	
-		
+	-- My first IIB App
 		 
 		RETURN TRUE;
 	END;
