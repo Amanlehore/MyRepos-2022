@@ -1,0 +1,50 @@
+
+
+	CREATE COMPUTE MODULE TestMsg_Flow_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		 
+		 CALL CopyMessageHeaders();
+	 
+			DECLARE fName CHARACTER;
+			DECLARE lName CHARACTER;
+			DECLARE FullName CHARACTER;
+			DECLARE MyAge INTEGER;
+			
+			SET MyAge = 40;
+			SET fName = InputRoot.NameInfo.FirstName;
+			SET lName = InputRoot.NameInfo.LastName;
+			SET OutputRoot.XMLNSC.NameInfo.Myage = MyAge;
+			SET FullName = fName ||' '|| lName;
+						
+--		 SET OutputRoot.Properties = InputRoot.Properties;
+--		 SET OutputRoot.MQMD = InputRoot.MQMD;
+----		 --SET OutputRoot.XMLNSC = InputRoot.XMLNSC copies the input msg to output
+--		 SET OutputRoot.XMLNSC = InputRoot.XMLNSC ;
+----		 -- SET OutputRoot.XMLNSC.Demo2.IIBFlow.TestMsg = InputRoot.XMLNSC.Demo2.MsgFlow.Data converts the msg structure to IIBFlow.TestMsg and sends copies to output. 
+--		 SET OutputRoot.XMLNSC.MsgFlow = InputRoot.XMLNSC.MsgFlow;
+--		 SET OutputRoot.XMLNSC.Demo2.IIBFlow.TestMsg = InputRoot.XMLNSC.Demo2.MsgFlow.Data;
+--		 SET OutputRoot.XMLNSC.Demo2.IIBFlow.TestMsg = SUBSTRING(InputRoot.XMLNSC.Demo2.MsgFlow.Data AFTER ' ');
+		 
+		 -- SET OutputRoot.XMLNSC.Demo2.*[]= InputRoot.XMLNSC.Demo2.*[];  for arry of elemnts under Demo2
+
+	
+		
+		 
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;
